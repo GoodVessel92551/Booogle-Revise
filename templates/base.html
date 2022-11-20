@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{url_for('static',filename='logo.png')}}" type="image/x-icon">
+    <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}" type="text/css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap" rel="stylesheet">
+    <title>Booogle Revise</title>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</head>
+<body>
+    <nav class="nav">
+        <ion-icon class="nav_icon" src="{{url_for('static', filename='logo.svg')}}"></ion-icon>
+        <strong class="nav_title">Booogle Revise</strong>
+        <a style="padding:0px;" id="profile_pic"><img src="{{url_for('static',filename='porfilepic.png')}}" onerror="this.src='{{url_for('static',filename='fallback.png')}}'"></a>
+        <a href="https://replit.com/@GoodVessel92551"><ion-icon name="person-add-outline"></ion-icon>Follow</a>
+        <a href="/__repl" id="like"><ion-icon name="heart-outline"></ion-icon>Like</a>
+        <a href="/new"><ion-icon name="add-outline"></ion-icon>New</a>
+        <a href="/home"><ion-icon name="home-outline"></ion-icon>Home</a>
+    </nav>
+    {% block main%}
+    {% endblock%}
+    <script src="{{url_for('static',filename='app.js')}}"></script>
+</body>
+</html>

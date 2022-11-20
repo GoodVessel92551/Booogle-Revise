@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block main %}
+<div class="make">
+    <h1 class="new_title">Make A New Set</h1><button class="make_next">Next<ion-icon name="arrow-forward-outline"></ion-icon></button>
+    <div class="make_title">
+        <span class="make_title_title">Title</span>
+        <input class="text" type="text" required>
+    </div>
+    <div class="make_desc">
+        <span class="make_title_title">Description</span>
+        <textarea class="text" style="height:200px;"></textarea>
+    </div>
+    <h2 class="choose_back">Choose A Background</h2>
+    <div class="backgrounds">
+        <a><img src="static/backgrounds/maths.png" onclick="document.getElementById('maths').checked = true"><input id="maths" checked value="maths" type="radio" name="background"></a>
+        <a><img src="static/backgrounds/computer.png" onclick="document.getElementById('computer').checked = true"><input id="computer" value="computer" type="radio" name="background"></a>
+        <a><img src="static/backgrounds/books.png" onclick="document.getElementById('books').checked = true"><input id="books" value="books" type="radio" name="background"></a>
+        <a><img src="static/backgrounds/science.png" onclick="document.getElementById('science').checked = true"><input value="science" id="science" type="radio" name="background"></a>
+        <a><img src="static/backgrounds/world.png" onclick="document.getElementById('world').checked = true"><input id="world" value="world" type="radio" name="background"></a>
+        <a><img src="static/backgrounds/dt.png" onclick="document.getElementById('dt').checked = true"><input id="dt" value="dt" type="radio" name="background"></a>
+        <a><img src="static/backgrounds/physics.png" onclick="document.getElementById('physics').checked = true"><input id="physics" value="physics" type="radio" name="background"></a>
+        <a><img src="static/backgrounds/sport.png" onclick="document.getElementById('sport').checked = true"><input id="sport" value="sport" type="radio" name="background"></a>
+    </div>
+</div>
+{% endblock%}

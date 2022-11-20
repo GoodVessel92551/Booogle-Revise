@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block main %}
+<div class="make">
+    <h1 class="new_title">Make A Question</h1></ion-icon><button class="make_finish">Finish<ion-icon name="checkmark-done-outline"></ion-icon><button class="make_next">Next<ion-icon name="arrow-forward-outline"></ion-icon></button>
+    <div class="make_title">
+        <span class="make_title_title">Question</span>
+        <input class="text" type="text" onkeyup="update(this.value, 'title')" id="title">
+    </div>
+    <div class="make_desc">
+        <span class="make_title_title">Answer</span>
+        <textarea class="text" style="height:200px;" id="desc" onkeyup="update(this.value, 'desc')"></textarea>
+    </div>
+
+</div>
+{% endblock%}
