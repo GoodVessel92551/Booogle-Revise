@@ -220,7 +220,7 @@ body{
 }
 
 
-.home_sets a{
+.home_sets a:not(#home_edit, #home_del){
     position:relative;
     width:300px;
     height:300px;
@@ -233,7 +233,7 @@ body{
     margin:15px;
 }
 
-.home_sets a::before{
+.home_sets a:not(#home_edit, #home_del)::before{
     content:"";
     position:absolute;
     bottom:0px;
@@ -245,16 +245,32 @@ body{
     overflow:hidden;
 }
 
+@keyframes home_del_load{
+    from{opacity:0;bottom:-5px}
+    to{opacity:1;bottom:5px}
+}
+
+.home_sets a:hover #home_edit{
+    animation:alternate 0.4s home_del_load;
+    opacity:1;
+    bottom:5px;
+}
+
+.home_sets a:hover #home_del{
+    animation:alternate 0.4s home_del_load;
+    opacity:1;
+    bottom:5px;
+}
+
 .home_sets a:hover{
     box-shadow:none;
     translate:0px 2px;
     filter:brightness(90%);
-    scale:0.99;
 }
 
 .home_sets a:active{
     filter:brightness(80%);
-    scale:0.98;
+    scale:0.99;
 }
 
 .home_sets a img{
@@ -549,6 +565,30 @@ body{
     width:calc(60% - 40px);
 }
 
+.text_answer{
+    margin-top:10px;
+    display:block;
+    width:100%;
+    height:50px;
+    background:var(--top_back);
+    border:2px solid var(--border);
+    border-radius:10px;
+    box-shadow:3px 3px 4px rgba(0,0,0,0.5);
+    text-align:center;
+    color:#fff;
+    line-height:50px;
+    transition:.2s;
+}
+
+.text_answer:focus{
+    border-color:var(--color);
+    translate:0 2px;
+    box-shadow:none;
+    scale:0.99;
+    filter:brightness(90%);
+    outline:none;
+}
+
 .what_question{
     aspect-ratio:2/1;
     width:100%;
@@ -563,7 +603,7 @@ body{
     font-size:3vw;
 }
 
-.question_main a:not(.what_question){
+.question_main button:not(.what_question),.sumbit_ans{
     margin-top:10px;
     display:block;
     width:100%;
@@ -579,7 +619,7 @@ body{
     transition:.2s;
 }
 
-.question_main a:not(.what_question):hover{
+.question_main button:not(.what_question):hover,.sumbit_ans:hover{
     border-color:var(--color);
     translate:0 2px;
     box-shadow:none;
@@ -621,3 +661,123 @@ body{
     border-radius:10px;
     box-shadow:3px 3px 4px rgba(0,0,0,0.5);
 }
+
+.error_title{
+    top:200px;
+    left:50%;
+    position:absolute;
+    translate:-50% 0%;
+    color:#fff;
+}
+
+#home_edit,#home_del{
+    background:var(--button_back);
+    width:20px;
+    height:20px;
+    color:#fff;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    padding:5px;
+    border-radius:50%;
+    margin:3px;
+    box-shadow:2px 2px 3px rgba(0,0,0,0.5);
+    cursor:pointer;
+    position:absolute;
+    bottom:-5px;
+    z-index:15;
+    transition:.2s;
+    opacity:0;
+}
+
+#home_edit:hover,#home_del:hover{
+    translate:0 2px;
+    box-shadow:none;
+    filter:brightness(90%);
+}
+
+#home_del{
+    right:5px;
+}
+
+#home_del:hover{
+    color:#d10000;
+}
+
+#home_edit{
+    right:40px;
+}
+
+#home_edit:hover{
+    color:var(--color);
+}
+
+.you_did_it{
+    position:absolute;
+    left:50%;
+    top:200px;
+    translate:-50% 0;
+    color:#fff;
+    z-index:5;
+}
+
+.you_did_well{
+    position:absolute;
+    left:50%;
+    top:250px;
+    translate:-50% 0;
+    color:#fff;
+    z-index:5;
+}
+
+.next_set{
+    position:absolute;
+    left:50%;
+    top:350px;
+    translate:-50% 0;
+    background:var(--color);
+    border:2px solid #009900;
+    border-radius:20px;
+    height:40px;
+    width:200px;
+    box-shadow:0px 0px 30px var(--color);
+    cursor:pointer;
+    font-weight:bold;
+    transition:.2s;
+    z-index:5;
+    text-decoration:none;
+    color:var(--background);
+    text-align:center;
+    line-height:40px;
+}
+
+.next_set:hover{
+    translate:-50% 2px;
+    box-shadow:0px 0px 50px var(--color);
+    filter:brightness(90%);
+}
+
+@keyframes star{
+    from{scale:1}
+    50%{scale:0.8;}
+    to{scale:1;}
+}
+
+#star{
+    height:15px;
+    width:15px;
+    border-radius:50%;
+    background:var(--color);
+    position:absolute;
+    animation:infinite 5s star;
+}
+
+.get_started{
+    position:absolute;
+    top:50%;
+    left:50%;
+    translate:-50% -50%;
+    color:#00bb00;
+    text-shadow:0px 0px 10px #00bb00;
+}
+

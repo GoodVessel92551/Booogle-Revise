@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block main %}
+    <form method="post" class="question_main">
+        <a class="what_question"><h1>{{question}}</h1></a>
+        <input class="text_answer" name="text" placeholder="Answer">
+        <input class="sumbit_ans" name="button" type="submit" value="Submit">
+    </form>
+{% endblock %}

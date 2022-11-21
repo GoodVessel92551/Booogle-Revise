@@ -1,38 +1,44 @@
 {% extends "base.html" %}
 {% block main %}
-<div class="home_sets">
-    <a>
-        <img src="static/backgrounds/maths.png">
-        <strong>Set Name</strong>
-        <p>About Set</p>
-    </a>
-    <a>
-        <img src="static/backgrounds/books.png">
-        <strong>Set Name</strong>
-        <p>About Set</p>
-    </a>
-    <a>
-        <img src="static/backgrounds/computer.png">
-        <strong>Set Name</strong>
-        <p>About Set</p>
-    </a>
-    <a>
-        <img src="static/backgrounds/books.png">
-        <strong>Set Name</strong>
-        <p>About Set</p>
-    </a>
-    <a>
-        <img src="static/backgrounds/maths.png">
-        <strong>Set Name</strong>
-        <p>About Set</p>
-    </a>
-    <a>
-        <img src="static/backgrounds/computer.png">
-        <strong>Set Name</strong>
-        <p>About Set</p>
-    </a>
+<div class="home_sets" id="sets">
 </div>
 <a href="/new" class="home_new">
     <ion-icon name="add-outline"></ion-icon>
 </a>
+<h1 class="get_started" id="get_started">Make A Set To Start Reviseing</h1>
+<script>
+    sets = {{sets|tojson}};
+    ids = Object.keys(sets)
+    if (ids.length == 0){
+        document.getElementById("get_started").style.display = "block";
+    }else{
+        document.getElementById("get_started").style.display = "none";
+        for (var i = 0; i < ids.length; i++){
+            id = ids[i];
+            var set_s = document.getElementById("sets");
+            var a = document.createElement("a");
+            var img = document.createElement("img");
+            var title = document.createElement("strong");
+            var desc = document.createElement("p");
+            var del = document.createElement("a");
+            var edit = document.createElement("a");
+            del.innerHTML = '<ion-icon name="trash-outline"></ion-icon>';
+            edit.innerHTML = '<ion-icon name="create-outline"></ion-icon>';
+            del.id="home_del";
+            edit.id="home_edit";
+            del.href=`/set/del/${id}`;
+            edit.href=`/set/edit/${id}`;
+            img.src = sets[id]["setup"]["background"];
+            title.innerText = sets[id]["setup"]["title"];
+            desc.innerText = sets[id]["setup"]["desc"];
+            set_s.appendChild(a);
+            a.href = `/set/${id}`;
+            a.appendChild(img);
+            a.appendChild(title);
+            a.appendChild(desc);
+            a.appendChild(del);
+            a.appendChild(edit);
+        }}
+</script>
+</script>
 {% endblock %}

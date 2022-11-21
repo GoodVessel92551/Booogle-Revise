@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block main %}
-    <div class="question_main">
-        <a class="what_question"><h1>Question</h1></a>
-        <a>Ans 1</a>
-        <a>Ans 2</a>
-        <a>Ans 3</a>
-    </div>
+    <form method="post" class="question_main">
+        <a class="what_question"><h1>{{question}}</h1></a>
+        <button name="button" value="{{ans1}}">{{ans1}}</button>
+        <button name="button" value="{{ans2}}">{{ans2}}</button>
+        <button name="button" value="{{ans3}}">{{ans3}}</button>
+    </form>
 {% endblock %}
