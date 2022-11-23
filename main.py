@@ -1,3 +1,4 @@
+
 import functions as fun
 from flask import Flask, render_template, request, redirect
 from replit import db,web
@@ -24,7 +25,7 @@ def home():
         sets = fun.make_dict(user.current["sets"])
     else:
         sets = {}
-    return render_template('home.html',sets=sets)
+    return render_template('home.html',sets=sets,profile_pic=request.headers["X-Replit-User-Profile-Image"],name=web.auth.name)
 
 @app.route('/new',methods=["POST","GET"])
 @web.authenticated(login_res="<script>window.open('/','_self')</script>")
@@ -37,7 +38,7 @@ def new():
         background = "static/backgrounds/"+request.form["background"]+".png"
         user.current["sets"][id] = {"setup":{"title":title.title(), "desc":desc, "background":background},}
         return redirect("/new/question")
-    return render_template('new.html')
+    return render_template('new.html',profile_pic=request.headers["X-Replit-User-Profile-Image"],name=web.auth.name)
 
 @app.route('/new/question',methods=["POST","GET"])
 @web.authenticated(login_res="<script>window.open('/','_self')</script>")
@@ -50,12 +51,12 @@ def question():
         user.current["sets"] = sets
         if request.form['button'] == "finsh":
             return redirect("/home")
-    return render_template('question.html')
+    return render_template('question.html',profile_pic=request.headers["X-Replit-User-Profile-Image"],name=web.auth.name)
 
 @app.route("/set")
 @web.authenticated(login_res="<script>window.open('/','_self')</script>")
 def set():
-    return render_template('set.html')
+    return render_template('set.html',profile_pic=request.headers["X-Replit-User-Profile-Image"],name=web.auth.name)
 
 @app.route("/set/<id>",methods=["POST","GET"])
 @web.authenticated(login_res="<script>window.open('/','_self')</script>")
@@ -68,7 +69,7 @@ def do_set(id):
             order[0] += 1
             user.current["current"] = order
             if order[0] == len(order):
-                return render_template("done.html")
+                return render_template("done.html",profile_pic=request.headers["X-Replit-User-Profile-Image"],name=web.auth.name)
 
         else:
             try:
@@ -81,12 +82,12 @@ def do_set(id):
             quest = str(order[order[0]])
             ans = sets[id]["Q"+quest]["ans"]
             question = sets[id]["Q"+quest]["title"]
-            if ans == what_ans:
-                return render_template('correct.html',question=question, ans=ans)
+            if ans.lower() == what_ans.lower():
+                return render_template('correct.html',question=question, ans=ans,profile_pic=request.headers["X-Replit-User-Profile-Image"],name=web.auth.name)
             else:
                 if random.randint(0,1) == 0:
                     user.current["current"].append(order[order[0]])
-                return render_template('wrong.html',question=question, ans=ans) 
+                return render_template('wrong.html',question=question, ans=ans,profile_pic=request.headers["X-Replit-User-Profile-Image"],name=web.auth.name) 
     else:
         set = fun.make_dict(user.current["sets"])[id]
         set_len = len(set) - 1
@@ -100,9 +101,11 @@ def do_set(id):
                 break
         user.current["current"] = order
     order = list(user.current["current"])
+    if order[0] > len(order):
+        return render_template("done.html",profile_pic=request.headers["X-Replit-User-Profile-Image"],name=web.auth.name)
     if len(fun.make_dict(user.current["sets"])[id])-1 < 3:
         question = fun.make_dict(user.current["sets"])[id]["Q"+str(order[order[0]])]["title"]
-        return render_template('set2.html',question=question)
+        return render_template('set2.html',question=question,profile_pic=request.headers["X-Replit-User-Profile-Image"],name=web.auth.name)
     else:
         set_len = len(order)-1
         ran1 = random.randint(1,set_len)
@@ -110,16 +113,13 @@ def do_set(id):
         while ran1 == ran2 or order[ran1] == order[order[0]] or order[ran2] == order[order[0]] or order[ran1] == order[ran2]:
             ran1 = random.randint(1,set_len)
             ran2 = random.randint(1,set_len)
-        print(order[order[0]])
-        print(order[ran1])
-        print(order[ran2])
         set = fun.make_dict(user.current["sets"])[id]
         question = set["Q"+str(order[order[0]])]["title"]
         ans = [set["Q"+str(order[order[0]])]["ans"],set["Q"+str(order[ran1])]["ans"],set["Q"+str(order[ran2])]["ans"]]
         ran1 = random.randint(0,len(ans)-1);ans1 = ans[ran1];ans.pop(ran1)
         ran2 = random.randint(0,len(ans)-1);ans2 = ans[ran2];ans.pop(ran2)
         ans3 = ans[0]
-        return render_template('set.html',question=question, ans1=ans1,ans2=ans2,ans3=ans3)
+        return render_template('set.html',question=question, ans1=ans1,ans2=ans2,ans3=ans3,profile_pic=request.headers["X-Replit-User-Profile-Image"],name=web.auth.name)
 
 @app.route("/set/del/<id>")
 @web.authenticated(login_res="<script>window.open('/','_self')</script>")
@@ -129,21 +129,17 @@ def del_set(id):
     user.current["sets"] = sets
     return redirect("/home")
 
-
-@app.route("/set2")
-@web.authenticated(login_res="<script>window.open('/','_self')</script>")
-def done():
-    return render_template('set2.html')
-
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('404.html'), 404
+    return render_template('404.html',profile_pic=request.headers["X-Replit-User-Profile-Image"],name=web.auth.name), 404
     
 @app.errorhandler(500)
 def error_500(e):
-    return render_template('500.html'), 500
+    return render_template('500.html',profile_pic=request.headers["X-Replit-User-Profile-Image"],name=web.auth.name), 500
 
 @app.route("/veiw")
 def veiw():
     return fun.make_dict(user.current["sets"])
+
+
 app.run(host='0.0.0.0', port=80,debug=True)

@@ -17,6 +17,7 @@
             id = ids[i];
             var set_s = document.getElementById("sets");
             var a = document.createElement("a");
+            var span = document.createElement("span");
             var img = document.createElement("img");
             var title = document.createElement("strong");
             var desc = document.createElement("p");
@@ -28,16 +29,18 @@
             edit.id="home_edit";
             del.href=`/set/del/${id}`;
             edit.href=`/set/edit/${id}`;
+            span.id="home_sets_span"
             img.src = sets[id]["setup"]["background"];
             title.innerText = sets[id]["setup"]["title"];
             desc.innerText = sets[id]["setup"]["desc"];
             set_s.appendChild(a);
             a.href = `/set/${id}`;
             a.appendChild(img);
-            a.appendChild(title);
-            a.appendChild(desc);
-            a.appendChild(del);
-            a.appendChild(edit);
+            span.appendChild(title);
+            span.appendChild(desc);
+            a.appendChild(span);
+            span.appendChild(del);
+            span.appendChild(edit);
         }}
 </script>
 </script>

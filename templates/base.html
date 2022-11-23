@@ -17,7 +17,7 @@
     <nav class="nav">
         <ion-icon class="nav_icon" src="{{url_for('static', filename='logo.svg')}}"></ion-icon>
         <strong class="nav_title">Booogle Revise</strong>
-        <a style="padding:0px;" id="profile_pic"><img src="{{url_for('static',filename='porfilepic.png')}}" onerror="this.src='{{url_for('static',filename='fallback.png')}}'"></a>
+        <a style="padding:0px;" id="profile_pic" href="https://replit.com/@{{name}}"><img src="{{profile_pic}}" onerror="this.src='{{url_for('static',filename='fallback.png')}}'"></a>
         <a href="https://replit.com/@GoodVessel92551"><ion-icon name="person-add-outline"></ion-icon>Follow</a>
         <a href="/__repl" id="like"><ion-icon name="heart-outline"></ion-icon>Like</a>
         <a href="/new"><ion-icon name="add-outline"></ion-icon>New</a>
