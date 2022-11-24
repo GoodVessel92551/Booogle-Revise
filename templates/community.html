@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block main %}
+<h1 class="title_home">Community</h1>
+<div class="home_sets" id="sets">
+</div>
+<script>
+    sets = {{published|tojson}};
+    ids = Object.keys(sets)
+        for (var i = 0; i < ids.length; i++){
+            id = ids[i];
+            var set_s = document.getElementById("sets");
+            var a = document.createElement("a");
+            var span = document.createElement("span");
+            var img = document.createElement("img");
+            var title = document.createElement("strong");
+            var desc = document.createElement("p");
+            var download = document.createElement("a");
+            var user = document.createElement("p")
+            download.innerHTML = '<ion-icon name="download-outline"></ion-icon>';
+            download.id="home_edit";
+            download.style.right="5px"
+            download.href=`/upload/${id}`;
+            span.id="home_sets_span";
+            user.id = "user"
+            user.innerText = sets[id]["setup"]["user"]
+            img.src = sets[id]["setup"]["background"];
+            title.innerText = sets[id]["setup"]["title"];
+            desc.innerText = sets[id]["setup"]["desc"];
+            set_s.appendChild(a);
+            a.appendChild(img);
+            span.appendChild(title);
+            span.appendChild(desc);
+            a.appendChild(span);
+            span.appendChild(download);
+            span.appendChild(user);
+            if({{name|tojson}} == "GoodVessel92551"){
+                var del = document.createElement("a");
+                del.innerHTML = '<ion-icon name="trash-outline"></ion-icon>';
+                del.id="home_del";
+                del.href=`/publish/del/${id}`;
+                del.style.right="40px";
+                span.appendChild(del);
+            }
+        }
+</script>
+</script>
+{% endblock %}

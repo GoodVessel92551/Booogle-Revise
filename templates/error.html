@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block main %}
+    <div class="correct_main">
+        <h1>{{error_title}}</h1>
+        <div class="what_correct">
+            <strong>Error:</strong>
+            <p>{{error}}</p>
+        </div>
+    </div>
+<a href="{{link}}" name="next" style="bottom:20px;top:unset;" class="make_next">Back</a>
+{% endblock %}

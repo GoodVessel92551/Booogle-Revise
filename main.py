@@ -1,10 +1,10 @@
-
 import functions as fun
 from flask import Flask, render_template, request, redirect
 from replit import db,web
-import random
-app = Flask(__name__)
+import random, sys
+from better_profanity import profanity
 
+app = Flask(__name__)
 user = web.UserStore()
 
 @app.route('/')
@@ -30,13 +30,17 @@ def home():
 @app.route('/new',methods=["POST","GET"])
 @web.authenticated(login_res="<script>window.open('/','_self')</script>")
 def new():
+    if int(sys.getsizeof(fun.make_dict(user.current["sets"]))) >= 4900:
+        return render_template("error.html",profile_pic=request.headers["X-Replit-User-Profile-Image"],name=web.auth.name ,error_title="You have ran out of storage.",error="You have reach the max amount of storage that you have please deleat a set to make a new one.",link="/home")
     if request.method == "POST":
         user.current["id"] += 1
         id = user.current["id"]
-        title = request.form["title"]
-        desc = request.form["desc"]
+        title = profanity.censor(request.form["title"])
+        desc = profanity.censor(request.form["desc"])
+        if len(title) == 0 or len(desc) == 0 or len(desc) > 500 or len(title) > 100:
+            return render_template("error.html",profile_pic=request.headers["X-Replit-User-Profile-Image"],name=web.auth.name,error_title="Too Long Or Short",error="The title or desciption is to long or to short please go back and make a new one.",link="/new")
         background = "static/backgrounds/"+request.form["background"]+".png"
-        user.current["sets"][id] = {"setup":{"title":title.title(), "desc":desc, "background":background},}
+        user.current["sets"][id] = {"setup":{"title":title.title(), "desc":desc, "background":background,"user":web.auth.name},}
         return redirect("/new/question")
     return render_template('new.html',profile_pic=request.headers["X-Replit-User-Profile-Image"],name=web.auth.name)
 
@@ -44,9 +48,11 @@ def new():
 @web.authenticated(login_res="<script>window.open('/','_self')</script>")
 def question():
     if request.method == "POST":
-        title = request.form["title"]
-        ans = request.form["ans"]
-        sets = user.current["sets"]
+        title = profanity.censor(request.form["title"])
+        ans = profanity.censor(request.form["ans"])
+        sets = fun.make_dict(user.current["sets"])
+        if len(title) == 0 or len(ans) == 0 or len(ans) > 200 or len(title) > 100:
+            return render_template("error.html",profile_pic=request.headers["X-Replit-User-Profile-Image"],name=web.auth.name ,error_title="Too Long Or Short",error="The question or answer is to long or to short please go back and make a new one.",link="/new/question")
         sets[str(user.current["id"])]["Q"+str(len(sets[str(user.current["id"])]))] = {"title":title, "ans":ans}
         user.current["sets"] = sets
         if request.form['button'] == "finsh":
@@ -130,16 +136,71 @@ def del_set(id):
     return redirect("/home")
 
 @app.errorhandler(404)
+@web.authenticated(login_res="<script>window.open('/','_self')</script>")
+
 def page_not_found(e):
     return render_template('404.html',profile_pic=request.headers["X-Replit-User-Profile-Image"],name=web.auth.name), 404
     
 @app.errorhandler(500)
+@web.authenticated(login_res="<script>window.open('/','_self')</script>")
 def error_500(e):
     return render_template('500.html',profile_pic=request.headers["X-Replit-User-Profile-Image"],name=web.auth.name), 500
+
+@app.route("/community")
+@web.authenticated(login_res="<script>window.open('/','_self')</script>")
+def community():
+    pub = db["published"]
+    published = {}
+    deleat = []
+    for i in range(len(pub)):
+        try:
+            set = db[pub[i][0]]["sets"][pub[i][1]]
+        except:
+            deleat.append(i)
+        else:
+            set = db[pub[i][0]]["sets"][pub[i][1]]
+            published[i] = set
+            db["published"][i][2] = str(i)
+    for i in range(len(deleat)):
+        db["published"].pop(deleat[i])
+    published = fun.make_dict(published)
+    print(published)
+    return render_template("community.html",profile_pic=request.headers["X-Replit-User-Profile-Image"],name=web.auth.name,published=published)
+
+@app.route("/upload/<id>")
+@web.authenticated(login_res="<script>window.open('/','_self')</script>")
+def upload(id):
+    if int(sys.getsizeof(fun.make_dict(user.current["sets"]))) >= 4900:
+        return render_template("error.html",profile_pic=request.headers["X-Replit-User-Profile-Image"],name=web.auth.name ,error_title="You have ran out of storage.",error="You have reach the max amount of storage that you have please deleat a set to make a new one.",link="/home")
+    pub = db["published"]
+    for i in range(len(pub)):
+        if id in pub[i]:
+            set = db[pub[i][0]]["sets"][pub[i][1]]
+            new_id = str(user.current["id"])
+            user.current["id"] =+ 1
+            user.current["sets"][new_id] = set
+    return redirect("/home")
+
+@app.route("/publish/del/<id>")
+@web.authenticated(login_res="<script>window.open('/','_self')</script>")
+def pub_del(id):
+    if web.auth.name == "GoodVessel92551":
+        for i in range(len(db["published"])):
+            if id in db["published"][i]:
+                print("Hello")
+                db["published"].pop(i)
+    return redirect("/community")
+
+@app.route("/publish/<id>")
+@web.authenticated(login_res="<script>window.open('/','_self')</script>")
+def publish(id):
+    name = web.auth.name
+    id = id
+    db["published"].append([name,id,0])
+    return redirect("/community")
 
 @app.route("/veiw")
 def veiw():
     return fun.make_dict(user.current["sets"])
-
 
 app.run(host='0.0.0.0', port=80,debug=True)

@@ -206,9 +206,16 @@ body{
     text-shadow: 0px 0px 4px #007500;
 }
 
+.title_home{
+    position:absolute;
+    left:20px;
+    top:50px;
+    color:#fff;
+}
+
 .home_sets{
     position:absolute;
-    top:60px;
+    top:110px;
     left:0px;
     margin:10px;
     width:calc(100% - 20px);
@@ -282,7 +289,26 @@ body{
     z-index:5;
 }
 
-.home_sets a p{
+.home_sets a:hover #user{
+    opacity:1;
+    bottom:0px;
+}
+
+#user{
+    bottom:-20px;
+    color:#a3a3a3;
+    font-size:12px;
+    opacity:0;
+    transition:.2s;
+    position:absolute;
+    left:10px;
+}
+
+#user:hover{
+    color:var(--color);
+}
+
+.home_sets a p:not(#user){
     position:absolute;
     top:20px;
     left:10px;
@@ -546,7 +572,6 @@ body{
     border-radius:10px;
     border:2px solid var(--button_back);
     box-sizing:border-box;
-    box-shadow:2px 2px 3px rgba(0,0,0,0.7);
     user-select:none;
 }
 
@@ -566,6 +591,9 @@ body{
     position:absolute;
     right:20px;
     top:20.5px;
+    color:#000;
+    text-decoration:none;
+    line-height:40px;
 }
 
 .make_finish{
@@ -619,7 +647,7 @@ body{
     left:50%;
     translate:-50% 0%;
     position:absolute;
-    width:calc(60% - 40px);
+    width:calc(50vmax - 40px);
 }
 
 .text_answer{
@@ -796,6 +824,109 @@ body{
     text-shadow:0px 0px 10px #00bb00;
 }
 
-.details{
-    width:100%;
+.right_click{
+    width:150px;
+    background:rgba(30,30,30,0.8);
+    backdrop-filter:blur(4px);
+    z-index:20;
+    border-radius:10px;
+    box-shadow:2px 2px 3px rgba(0,0,0,0.5);
+    position:fixed;
+    display:none;
+    overflow:hidden;
+}
+
+.right_click a{
+    display:block;
+    width:calc(100% - 10px);
+    border-radius:5px;
+    margin:5px;
+    background:rgba(50,50,50,0.7);
+    backdrop-filter:blur(4px);
+    height:30px;
+    line-height:30px;
+    color:#fff;
+    padding-left:10px;
+    box-sizing:border-box;
+    box-shadow:1px 1px 2px rgba(0,0,0,0.5);
+    cursor:pointer;
+}
+
+.right_click a ion-icon{
+    position: relative;
+    top: 5%;
+    margin-right: 3px;
+    transition: .2s;
+}
+
+dialog{
+    width:400px;
+    height:170px;
+    background:var(--background);
+    border:none;
+    border-radius:10px;
+    box-shadow:3px 3px 4px rgba(0,0,0,0.5)
+}
+
+dialog::backdrop{
+    background:#000;
+    opacity:0.5;
+}
+
+.are_you_sure{
+    color:#fff;
+    margin:10px;
+    display:block;
+}
+
+.are_you_sure_p{
+    color:#fff;
+    margin:10px;
+    display:block;
+}
+
+.remove{
+    background:#d10000;
+    width:100px;
+    height:30px;
+    border-radius:15px;
+    border:none;
+    font-weight:bold;
+    position:absolute;
+    right:10px;
+    bottom:10px;
+    box-shadow:2px 2px 3px rgba(0,0,0,0.5);
+    cursor:pointer;
+    transition:.2s;
+    line-height:30px;
+    text-align:center;
+    user-select:none;
+}
+
+.remove:hover{
+    translate:0px 2px;
+    filter:brightness(90%);
+    box-shadow:none;
+}
+
+.remove:focus, .remove:active{
+    translate:0px 2px;
+    filter:brightness(85%);
+    box-shadow:inset 1px 1px 2px rgba(0,0,0,0.5);
+    outline:none;
+}
+
+.close{
+    position:absolute;
+    top:10px;
+    right:10px;
+    color:#fff;
+    font-size:21px;
+    transition:.2s;
+    cursor:pointer;
+}
+
+.close:hover{
+    color:var(--color);
+    rotate:90deg;
 }

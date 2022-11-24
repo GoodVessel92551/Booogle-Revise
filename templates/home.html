@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block main %}
+<h1 class="title_home">Your Sets</h1>
 <div class="home_sets" id="sets">
 </div>
 <a href="/new" class="home_new">
@@ -22,13 +23,13 @@
             var title = document.createElement("strong");
             var desc = document.createElement("p");
             var del = document.createElement("a");
-            var edit = document.createElement("a");
+            var upload = document.createElement("a");
+            upload.innerHTML = '<ion-icon name="push-outline"></ion-icon>'
             del.innerHTML = '<ion-icon name="trash-outline"></ion-icon>';
-            edit.innerHTML = '<ion-icon name="create-outline"></ion-icon>';
             del.id="home_del";
-            edit.id="home_edit";
+            upload.id="home_edit";
             del.href=`/set/del/${id}`;
-            edit.href=`/set/edit/${id}`;
+            upload.href=`/publish/${id}`;
             span.id="home_sets_span"
             img.src = sets[id]["setup"]["background"];
             title.innerText = sets[id]["setup"]["title"];
@@ -40,7 +41,7 @@
             span.appendChild(desc);
             a.appendChild(span);
             span.appendChild(del);
-            span.appendChild(edit);
+            span.appendChild(upload);
         }}
 </script>
 </script>
